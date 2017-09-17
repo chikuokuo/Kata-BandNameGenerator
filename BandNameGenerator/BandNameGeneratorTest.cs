@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BandNameGenerator
@@ -25,6 +26,24 @@ namespace BandNameGenerator
             GenerateBandNameShouldEqual(string.Empty, string.Empty);
         }
 
+        [TestMethod]
+        public void Input_Testing_ShouldReturn_The_Testing()
+        {
+            GenerateBandNameShouldEqual("Testing", "The Testing");
+        }
+
+        [TestMethod]
+        public void Input_testing_ShouldReturn_The_Testing()
+        {
+            GenerateBandNameShouldEqual("testing", "The Testing");
+        }
+
+        [TestMethod]
+        public void Input_test_ShouldReturn_Testest()
+        {
+            GenerateBandNameShouldEqual("test", "Testest");
+        }
+
         private static void GenerateBandNameShouldEqual(string input, string expected)
         {
             BandNameGenerator bandNameGenerator = new BandNameGenerator();
@@ -37,7 +56,16 @@ namespace BandNameGenerator
     {
         public string GenerateBandName(string name)
         {
-            return "";
+            if (string.IsNullOrEmpty(name))
+            {
+                return "";
+            }
+            return string.Equals(name.First(), name.Last()) ? FirstCharToUpper(name) + name.Substring(1) : "The " + FirstCharToUpper(name);
+        }
+
+        private string FirstCharToUpper(string name)
+        {
+            return char.ToUpper(name.First()) + name.Substring(1);
         }
     }
 }
